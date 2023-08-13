@@ -18,7 +18,7 @@ module.exports = {
     new ESLintPlugin(),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Add project name hereeee',
+      title: 'Money Magic!',
       template: './src/index.html',
       inject: 'body'
     }),
@@ -32,7 +32,27 @@ module.exports = {
           'style-loader',
           'css-loader'
         ]
-      }
+
+      },
+      {
+        test: /\.(gif|png|jpe?g)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'coin.jpeg',
+              outputPath: 'assets/img/'
+            }
+          }
+        ]
+      },
+
+      {
+        test: /\.html$/,
+        use: [
+          'html-loader'
+        ]
+      },
     ]
   }
 };

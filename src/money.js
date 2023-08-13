@@ -1,16 +1,17 @@
 export default class Dollar {
-  static getMoney(amount) {
-    return fetch(`https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`),
+  static getMoney() {
+    return fetch(`https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`)
       .then(function (response) {
-      if (!response.ok) {
-        const errorMessage = `${response.status} ${response.statusText}`;
-        throw new Error(errorMessage);
-      } else {
-        return response.json();
-      }
-    })
-        .catch(function (error) {
-          return error;
-        });
+        if (!response.ok) {
+          const errorMessage = `${response.status} ${response.statusText}`;
+          throw new Error(errorMessage);
+        } else {
+          return response.json();
+        }
+      })
+      .catch(function (error) {
+        console.error(`Error fetching conversion rates`, error);
+        document.getElementById('result').textContent = `Error fetching conversion rates. Please try again later.`;
+      });
   }
 }

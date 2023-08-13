@@ -2,21 +2,36 @@
 <html lang="en">
 
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Handjet:wght@300;400&family=Nabla&display=swap"
+        rel="stylesheet">
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Money Magic</title>
 </head>
 
 <body>
-    <h1>Find the converted amount of any currency!</h1>
+    <h1>Money Magic!</h1>
+    <h2>Find the converted amount of any currency!</h2>
 
-    <form>
-        <label for="input" class="input"><input type="text" name="input" placeholder="Enter amount here"
-                id="input"></input></label>
-        <button type="submit" id="button" class="butn-success">Submit</button>
+    <form class="form">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" placeholder="Enter amount">
+
+        <label for="fromCurrency">From:</label>
+        <select id="fromCurrency"></select>
+
+        <label for="toCurrency">To:</label>
+        <select id="toCurrency"></select>
+
+        <button type="submit" class="butn-success" onclick="handleConversion()">Convert</button>
     </form>
 
-    <div id="result">
+    <div id="loading" class="loading">Loading conversion rates...</div>
+
+    <div id="result" class="result">
 
     </div>
 </body>

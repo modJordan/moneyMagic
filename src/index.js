@@ -5,44 +5,72 @@ import Dollar from './money';
 
 //Business Logic
 
-function getMoney(amount) {
-  Dollar.getMoney(amount)
-    .then(function (response) {
-      if (response.result === success) {
-        printNewMoney(response);
-      } else {
-        printError(response);
-      }
+/**
+ *
+ * @param {number} amount; 
+ * @param {string} fromCurrency;
+ * @param {string} toCurrency; 
+ * @param {object} data;
+ *
+ * @returns {number};
+ */
+
+let jsonData;
+
+function convertCurrency(amount, fromCurrency, toCurrency, data) {
+  if (!data.conversion_rates[fromCurrency] || !data.conversion_rates[toCurrency]) {
+    throw new Error('Invalid currency code provided.');
+  }
+  const amountInBaseCurrency = amount / data.conversion_rates[fromCurrency];
+  const convertedAmount = amountInBaseCurrency * data.conversion_rates[toCurrency];
+  return convertedAmount;
+}
+
+function initialize() {
+  Dollar.getMoney()
+    .then(data => {
+      jsonData = data;
+      document.getElementById('loading').style.display = 'none';
+      populateDropdowns();
     });
 }
 
+function populateDropdowns() {
+  const fromCurrencyDropdown = document.getElementById('fromCurrency');
+  const toCurrencyDropdown = document.getElementById('toCurrency');
+
+  for (const currency in jsonData.conversion_rates) {
+    const option = document.createElement('option');
+    option.value = currency;
+    option.textContent = currency;
+
+    fromCurrencyDropdown.appendChild(option.cloneNode(true));
+    toCurrencyDropdown.appendChild(option);
+  }
+}
 
 //UI Logic 
 
+window.handleConversion = handleConversion;
 
-function printNewMoney(response) {
-  const newMoney = document.querySelector("#result");
-  response.conversion_rates.forEach(response => {
-    newMoney.innerHTML = `${response.conversion_rates[0]}`;
-  });
+function handleConversion(e) {
+  e.preventDefault();
 
+  const amount = parseFloat(document.getElementById('amount').value);
+  const fromCurrency = document.getElementById('fromCurrency').value;
+  const toCurrency = document.getElementById('toCurrency').value;
 
-}
-
-function printError(error) {
-  document.getElementById("result").innerText = `There was an error accessing the currency value: ${error}.`;
-}
-
-function handleForm(event) {
-  event.preventDefault();
-  const input = document.getElementById("input").value;
-  document.getElementById("input").value = null;
-  getMoney(input);
-  //printBike(response);
+  try {
+    const result = convertCurrency(amount, fromCurrency, toCurrency, jsonData);
+    document.getElementById('result').textContent = `Converted amount: ${result.toFixed(2)} ${toCurrency}`;
+  } catch (error) {
+    document.getElementById('result').textContent = 'Error converting currency. Please check your input.';
+  }
 }
 
 window.addEventListener("load", function () {
-  document.querySelector('form').addEventListener("submit", handleForm);
+  initialize();
+  document.querySelector('form').addEventListener("submit", handleConversion);
 });
 
 
