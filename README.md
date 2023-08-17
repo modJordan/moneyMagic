@@ -22,6 +22,9 @@ _Select any amount you want you millionaire! At least, you can be a millionaire 
 
 * Clone or Fork project
 * Make sure all images and files are in the proper folders
+* Create a .env file using $touch .env
+* Obtain your own API key by visiting [this API site](https://www.exchangerate-api.com/)
+* In your .env file, add: ```API_KEY = <Your API key here>```
 * Run $npm install
 * Run $npm run build to setup environment
 * Run $npm run test to run the TDD

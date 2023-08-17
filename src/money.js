@@ -9,9 +9,10 @@ export default class Dollar {
           return response.json();
         }
       })
-      .catch(function (error) {
-        console.error(`Error fetching conversion rates`, error);
-        document.getElementById('result').textContent = `Error fetching conversion rates. Please try again later.`;
+      .catch(function (response) {
+        if (response) {
+          document.getElementById('result').textContent = `Error fetching conversion rates. Please try again later.`;
+        }
       });
   }
 }
